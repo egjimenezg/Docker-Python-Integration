@@ -1,0 +1,4 @@
+gradle/
+.gradle/
+src/Docker_Python_Integration.egg-info/
+*.pyc
