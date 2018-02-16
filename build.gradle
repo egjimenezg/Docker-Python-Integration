@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-  python 'pypi:flask:0.12.2'
+  python 'pypi:requests:2.9.1'
   test 'pypi:mock:1.3.0'
 }
 
