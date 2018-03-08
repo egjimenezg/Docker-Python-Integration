@@ -7,7 +7,6 @@ dependencies {
   python 'pypi:requests:2.9.1'
   python 'pypi:Flask:0.12.2'
   python 'pypi:numpy:1.13.3'
-  python 'pypi:pandas:0.22.0'
   test 'pypi:mock:1.3.0'
   test 'pypi:pytest:3.4.2'
 }
@@ -39,7 +38,7 @@ task downloadPivyImporterJar(type:Download){
   overwrite true
 }
 
-task importDependencies {
+task importDependencies(dependsOn:downloadPivyImporterJar) {
   doLast{
   new File("dependencies")
 
@@ -53,4 +52,4 @@ task importDependencies {
   }
 }
 
-build.dependsOn installWheelDependencies
+build.dependsOn installWheelDependencies, importDependencies
