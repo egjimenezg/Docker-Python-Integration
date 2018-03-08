@@ -1,13 +1,19 @@
 plugins {
   id "com.linkedin.python-sdist" version "0.4.9"
+  id "de.undercouch.download" version "3.4.1"
 }
 
 dependencies {
   python 'pypi:requests:2.9.1'
   python 'pypi:Flask:0.12.2'
   python 'pypi:numpy:1.13.3'
+  python 'pypi:pandas:0.22.0'
   test 'pypi:mock:1.3.0'
   test 'pypi:pytest:3.4.2'
+}
+
+ext{
+  pypiDependencies = ["pandas:0.22.0"]
 }
 
 repositories {
@@ -25,6 +31,26 @@ repositories {
 
 task installWheelDependencies(type:Exec) {
   commandLine 'sh','./install_wheel_dependencies.sh'
+}
+
+task downloadPivyImporterJar(type:Download){
+  src "https://dl.bintray.com/linkedin/maven/com/linkedin/pygradle/pivy-importer/0.7.0/pivy-importer-0.7.0-all.jar"
+  dest new File("jarFiles","pivy-importer.jar")
+  overwrite true
+}
+
+task importDependencies {
+  doLast{
+  new File("dependencies")
+
+    javaexec {
+      main="-jar"
+      args=["jarFiles/pivy-importer.jar",
+            "--repo",
+            "dependencies",
+            pypiDependencies.join(" ")]
+    }
+  }
 }
 
 build.dependsOn installWheelDependencies
