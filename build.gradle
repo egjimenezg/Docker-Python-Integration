@@ -7,6 +7,7 @@ dependencies {
   python 'pypi:Flask:0.12.2'
   python 'pypi:numpy:1.13.3'
   test 'pypi:mock:1.3.0'
+  test 'pypi:pytest:3.4.2'
 }
 
 repositories {
@@ -21,3 +22,9 @@ repositories {
   }
 
 }
+
+task installWheelDependencies(type:Exec) {
+  commandLine 'sh','./install_wheel_dependencies.sh'
+}
+
+build.dependsOn installWheelDependencies
