@@ -34,21 +34,23 @@ task installWheelDependencies(type:Exec) {
 
 task downloadPivyImporterJar(type:Download){
   src "https://dl.bintray.com/linkedin/maven/com/linkedin/pygradle/pivy-importer/0.7.0/pivy-importer-0.7.0-all.jar"
-  dest new File("jarFiles","pivy-importer.jar")
+  dest new File("jars","pivy-importer.jar")
   overwrite true
 }
 
-task importDependencies(dependsOn:downloadPivyImporterJar) {
+task importDependencies(dependsOn: downloadPivyImporterJar) {
   doLast{
-  new File("dependencies")
+    File dependenciesDirectory = new File("dependencies")
 
     javaexec {
       main="-jar"
-      args=["jarFiles/pivy-importer.jar",
+      args=["jars/pivy-importer.jar",
             "--repo",
             "dependencies",
             pypiDependencies.join(" ")]
     }
+
+    dependenciesDirectory.delete()
   }
 }
 
